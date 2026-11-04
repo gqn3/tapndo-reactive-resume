@@ -19393,3 +19393,31 @@ msgstr "تصغير"
 #: src/libs/locale.ts
 msgid "Zulu"
 msgstr "الزولو"
+
+#: src/features/templates/gallery.tsx
+msgid "Find a template"
+msgstr "ابحث عن قالب"
+
+#: src/features/templates/gallery.tsx
+msgid "Search templates"
+msgstr "البحث في القوالب"
+
+#: src/features/templates/gallery.tsx
+msgid "Search by name or style"
+msgstr "ابحث بالاسم أو النمط"
+
+#: src/features/templates/gallery.tsx
+msgid "All layouts"
+msgstr "كل التخطيطات"
+
+#: src/features/templates/gallery.tsx
+msgid "templates shown"
+msgstr "قالبًا معروضًا"
+
+#: src/features/templates/gallery.tsx
+msgid "No templates match your search."
+msgstr "لا توجد قوالب تطابق بحثك."
+
+#: src/features/templates/gallery.tsx
+msgid "One column with ruled headings and a photo beside the name."
+msgstr "قالب بعمود واحد وعناوين مفصولة بخط وصورة بجانب الاسم."
