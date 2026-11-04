@@ -47,21 +47,21 @@ export function LandingHeader({ story = true }: LandingHeaderProps) {
 
 			<a href={story ? "#top" : "/"} className="flex items-center gap-2.5 rounded-md">
 				<img
-					src="/icon/light.svg"
+					src="/tapndo/icon.svg"
 					alt=""
 					width={30}
 					height={30}
 					className={cn("size-[30px] dark:hidden", night && "hidden")}
 				/>
 				<img
-					src="/icon/dark.svg"
+					src="/tapndo/icon.svg"
 					alt=""
 					width={30}
 					height={30}
 					className={cn("hidden size-[30px] dark:block", night && "block")}
 				/>
 				{/* The wordmark stays in the DOM for screen readers and crawlers; the logomark is what shows. */}
-				<span className="sr-only">Reactive Resume</span>
+				<span className="text-base font-semibold tracking-tight">TapNDo CV</span>
 			</a>
 
 			{story && (

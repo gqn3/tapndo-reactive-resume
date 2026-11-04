@@ -1,11 +1,13 @@
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { templateLayouts, templateSchema } from "@reactive-resume/schema/templates";
 import { cn } from "@reactive-resume/utils/style";
 import { templates } from "@/dialogs/resume/template/data";
 import { LandingBackground } from "@/features/homepage/background";
 import { CtaLink, Doodle, labelClass } from "@/features/homepage/ui";
+import { filterTemplates, type ColumnFilter } from "@/features/templates/gallery-filter";
 
 const linkClass = "text-accent-text underline underline-offset-4 transition-colors hover:text-accent-hover";
 
@@ -13,6 +15,13 @@ const linkClass = "text-accent-text underline underline-offset-4 transition-colo
 export function TemplateGallery() {
 	const { i18n } = useLingui();
 	const count = i18n.number(templateSchema.options.length);
+	const [query, setQuery] = useState("");
+	const [columns, setColumns] = useState<ColumnFilter>("all");
+	const visibleTemplates = filterTemplates(
+		query,
+		columns,
+		Object.fromEntries(templateSchema.options.map((id) => [id, i18n._(templates[id].description)])),
+	);
 
 	return (
 		<div className="landing relative isolate overflow-x-clip bg-bg font-ui text-ink">
@@ -63,10 +72,45 @@ export function TemplateGallery() {
 						</section>
 					</div>
 
+					<div
+						className="mt-12 flex flex-wrap items-end gap-4 rounded-2xl border border-line bg-raised p-5 shadow-sm"
+						role="search"
+						aria-label={t`Find a template`}
+					>
+						<label className="flex min-w-48 flex-1 flex-col gap-2 text-sm font-semibold">
+							{t`Search templates`}
+							<input
+								type="search"
+								value={query}
+								onChange={(event) => setQuery(event.target.value)}
+								placeholder={t`Search by name or style`}
+								className="min-h-11 rounded-lg border border-line bg-bg px-3 text-ink"
+							/>
+						</label>
+						<label className="flex min-w-40 flex-col gap-2 text-sm font-semibold">
+							{t`Layout`}
+							<select
+								value={columns}
+								onChange={(event) => setColumns(event.target.value as ColumnFilter)}
+								className="min-h-11 rounded-lg border border-line bg-bg px-3 text-ink"
+							>
+								<option value="all">{t`All layouts`}</option>
+								<option value="one">{t`One column`}</option>
+								<option value="two">{t`Two columns`}</option>
+							</select>
+						</label>
+						<p className="self-center text-sm text-ink-3" aria-live="polite">
+							{i18n.number(visibleTemplates.length)} {t`templates shown`}
+						</p>
+					</div>
+					{visibleTemplates.length === 0 && (
+						<p className="mt-6 text-ink-2" role="status">{t`No templates match your search.`}</p>
+					)}
+
 					{/* Two side by side even on phones, so the page compares layouts; the description and the sample PDF link
 					    join from sm up. */}
 					<div className="mt-16 grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-8 sm:gap-y-14 lg:grid-cols-3">
-						{templateSchema.options.map((id, index) => {
+						{visibleTemplates.map((id, index) => {
 							const template = templates[id];
 							const name = template.name;
 							const layout = templateLayouts[id];
@@ -98,7 +142,9 @@ export function TemplateGallery() {
 										{layout.columns === 1 ? t`One column` : t`Two columns`}
 									</p>
 									<p className="mt-3 hidden font-display text-[17px] leading-[1.45] text-pretty text-ink-2 sm:block">
-										{i18n._(template.description)}
+										{id === "meowth"
+											? t`One column with ruled headings and a photo beside the name.`
+											: i18n._(template.description)}
 									</p>
 									<div className="mt-2 flex flex-wrap items-center gap-x-5">
 										{/* Signed out, through sign-up; signed in, straight to a blank resume in this template. */}
