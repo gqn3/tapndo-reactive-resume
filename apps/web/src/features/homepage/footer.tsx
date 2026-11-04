@@ -100,16 +100,16 @@ export function LandingFooter({ story = true }: LandingFooterProps) {
 				<div className="flex min-w-0 flex-col items-start gap-5">
 					<img
 						loading="lazy"
-						src="/logo/light.svg"
-						alt="Reactive Resume"
+						src="/tapndo/wordmark.svg"
+						alt="TapNDo CV"
 						width={140}
 						height={140}
 						className="-ms-[18px] -mt-[22px] -mb-[22px] size-[140px] dark:hidden"
 					/>
 					<img
 						loading="lazy"
-						src="/logo/dark.svg"
-						alt="Reactive Resume"
+						src="/tapndo/wordmark.svg"
+						alt="TapNDo CV"
 						width={140}
 						height={140}
 						className="-ms-[18px] -mt-[22px] -mb-[22px] hidden size-[140px] dark:block"
