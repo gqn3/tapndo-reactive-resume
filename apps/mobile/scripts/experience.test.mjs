@@ -224,6 +224,7 @@ const { exportFile } = load("features/share/files.ts", {
 	"expo-print": {},
 	"expo-sharing": {},
 	"@reactive-resume/resume/export-sections": {},
+ "@reactive-resume/resume/pdf-export-policy": harness.load("../../../packages/resume/src/pdf-export-policy.ts", {}),
 	"./letter": { letterWords: async () => translatedLetterWords },
 	"./messages": {},
 	"./model": { safeFileName },

@@ -87,6 +87,15 @@ describe("createPublicResumePdf", () => {
 		mocks.renderPdf.mockReset().mockResolvedValue(new File(["%PDF"], "resume.pdf", { type: "application/pdf" }));
 	});
 
+	it("blocks Arabic before cache/304 and rendering", async () => {
+  const resume = buildResume();
+  resume.data.basics.name = "ليلى أحمد";
+  found(resume);
+  await expect(createPublicResumePdf({ ...input, requestHeaders: new Headers({ "if-none-match": "*" }) })).rejects.toMatchObject({ code: "BAD_REQUEST" });
+  expect(mocks.renderPdf).not.toHaveBeenCalled();
+  expect(mocks.consume).not.toHaveBeenCalled();
+ });
+
 	it("authorizes private and password-protected resumes before budget or render", async () => {
 		found(buildResume({ isPublic: false }));
 		await expect(createPublicResumePdf(input)).rejects.toMatchObject({ code: "NOT_FOUND" });

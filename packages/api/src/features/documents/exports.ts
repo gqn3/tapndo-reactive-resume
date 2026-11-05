@@ -1,3 +1,4 @@
+import { pdfExportBlockReason } from "@reactive-resume/resume/pdf-export-policy";
 import type { CoverLetter } from "@reactive-resume/schema/cover-letter/data";
 import type { ResumeData } from "@reactive-resume/schema/resume/data";
 import { ORPCError } from "@orpc/server";
@@ -53,6 +54,8 @@ export async function fileResponse(
 	target: "resume" | "cover-letter" = "resume",
 ) {
 	const filename = `${getDefaultFileName({ name, slug: "", data }, target)}.${format}`;
+	const blocked = format === "pdf" ? pdfExportBlockReason(data) : null;
+	if (blocked) throw new ORPCError("BAD_REQUEST", { message: blocked });
 	let body: File;
 	try {
 		if (format === "json") body = new File([JSON.stringify(json, null, 2)], filename, { type: "application/json" });

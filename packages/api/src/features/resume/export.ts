@@ -1,3 +1,4 @@
+import { pdfExportBlockReason } from "@reactive-resume/resume/pdf-export-policy";
 import { ORPCError } from "@orpc/server";
 import z from "zod";
 import { env } from "@reactive-resume/env/server";
@@ -20,6 +21,8 @@ export async function createResumePdfDownload(input: CreateResumePdfDownloadInpu
 	const resume = await resumeService.getById({ id: input.id, userId: input.userId });
 	await consumePdfExportLimit(input);
 	const data = parseStoredResumeData(resume.data);
+	const blocked = pdfExportBlockReason(data);
+	if (blocked) throw new ORPCError("BAD_REQUEST", { message: blocked });
 	const filename = `${getDefaultFileName({ name: resume.name, slug: resume.slug, data })}.pdf`;
 
 	try {

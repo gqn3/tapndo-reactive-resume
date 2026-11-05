@@ -1,3 +1,4 @@
+import { pdfExportBlockReason } from "@reactive-resume/resume/pdf-export-policy";
 import type { ResumeExportTarget } from "@reactive-resume/resume/export-sections";
 import type { ResumeData } from "@reactive-resume/schema/resume/data";
 import { t } from "@lingui/core/macro";
@@ -51,6 +52,8 @@ export async function createExportFile(
 
 	const data = getResumeExportData(resume.data, target);
 	if (format === "pdf") {
+		const blocked = pdfExportBlockReason(data);
+		if (blocked) throw new Error(blocked);
 		return createResumePdfBlob(data, target === "cover-letter" ? options : undefined, {
 			onLostCharacters: warnLostCharacters,
 		});

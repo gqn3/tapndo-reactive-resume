@@ -47,3 +47,12 @@ it("marks editor list paragraphs in browser Word downloads", async () => {
 	expect(xml).toContain("Plain bullet");
 	expect(strFromU8(numberingXml)).toContain('<w:numFmt w:val="bullet"/>');
 });
+
+
+it("blocks Arabic PDF download while preserving JSON data export", async () => {
+ const data = structuredClone(defaultResumeData);
+ data.basics.name = "ليلى أحمد";
+ const resume = { name: "Arabic", slug: "arabic", data };
+ await expect(createExportFile(resume, "pdf")).rejects.toThrow("Arabic PDF");
+ expect(await (await createExportFile(resume, "json")).text()).toContain("ليلى أحمد");
+});

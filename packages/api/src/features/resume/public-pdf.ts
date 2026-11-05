@@ -1,3 +1,5 @@
+import { pdfExportBlockReason } from "@reactive-resume/resume/pdf-export-policy";
+import { ORPCError } from "@orpc/server";
 import type { StorageService } from "../storage";
 import type { PublicResumeDownloadInput } from "./public-download";
 import type { ResumeData } from "@reactive-resume/schema/resume/data";
@@ -33,6 +35,8 @@ export async function createPublicResumePdf(input: CreatePublicResumePdfInput): 
 
 	// Every visitor gets the anonymous view, so one cached file serves them all (hidden content never prints anyway).
 	const data = publicResumeData(resume);
+	const blocked = pdfExportBlockReason(data);
+	if (blocked) throw new ORPCError("BAD_REQUEST", { message: blocked });
 	const filename = `${getDefaultFileName({ name: "", slug: "", data })}.pdf`;
 	const hash = createHash("sha256").update(JSON.stringify(data)).digest("hex").slice(0, 32);
 	// Under the resume's pdfs/ folder: deleted with the resume or account, and /uploads serves it only to the owner.

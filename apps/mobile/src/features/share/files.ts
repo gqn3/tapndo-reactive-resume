@@ -1,3 +1,4 @@
+import { pdfExportBlockReason } from "@reactive-resume/resume/pdf-export-policy";
 import type { ResumeData } from "@reactive-resume/schema/resume/data";
 import { t } from "@lingui/core/macro";
 import { Directory, File, Paths } from "expo-file-system";
@@ -41,6 +42,8 @@ export function exportDirectory() {
 }
 
 export async function localPdf(data: ResumeData, letter = false) {
+	const blocked = pdfExportBlockReason(data);
+	if (blocked) throw new Error(blocked);
 	const pipeline = createPreviewPipeline();
 	try {
 		const result = await pipeline.render({

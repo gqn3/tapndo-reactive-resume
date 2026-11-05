@@ -14,6 +14,7 @@
 		"./markdown": "./src/markdown.ts",
 		"./move-item": "./src/move-item.ts",
 		"./patch": "./src/patch.ts",
+		"./pdf-export-policy": "./src/pdf-export-policy.ts",
 		"./proposals": "./src/proposals.ts",
 		"./section-sort": "./src/section-sort.ts",
 		"./section-title": "./src/section-title.ts",

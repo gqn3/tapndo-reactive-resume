@@ -68,3 +68,11 @@ it("adds an RFC 5987 UTF-8 file name for a Chinese full name", async () => {
 		"attachment; filename=\"Resume.pdf\"; filename*=UTF-8''%E6%9D%8E%E6%98%8E-Resume.pdf",
 	);
 });
+
+
+it("blocks Arabic content on an English locale before rendering a downloadable PDF", async () => {
+ render.mockClear();
+ mocks.getById.mockResolvedValueOnce({ name: "Arabic", slug: "arabic", data: { basics: { name: "ليلى أحمد" } } });
+ await expect(createResumePdfDownload({ id: "arabic-blocked", userId: "arabic-user" })).rejects.toMatchObject({ code: "BAD_REQUEST" });
+ expect(render).not.toHaveBeenCalled();
+});
